@@ -44,7 +44,7 @@ const delData = (id) => {
     let allData = JSON.parse(localStorage.getItem("CatInfo"));
     allData.splice(id-1, 1);
 
-    newId = 1
+    newId = 1 ;
     allData.map((i) => {
         i.id = newId++;
     })
