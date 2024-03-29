@@ -1,54 +1,83 @@
+let arr = [];
 
-//insert
-const arr = [];
-const addData = () => {
-    let allData = JSON.parse(localStorage.getItem("CatInfo"));
-    let len = allData != null ? allData.length : 0;
-    const name = document.catfrm.catname.value;
-
-    const catData = {
-        id: len + 1,
-        name: name
-    }
-    arr.push(catData);
-    localStorage.setItem('CatInfo', JSON.stringify(arr));
-    document.catfrm.catname.value = "";
-
-    dispData()
-
-}
-
-
-//diplay
-const dispData = () => {
-    tr = ''
-    let allData = JSON.parse(localStorage.getItem("CatInfo"));
-    if (allData != null) {
-        allData.map((i) => {
-            tr += `<tr> 
-        <td>${i.id}</td>
-        <td> ${i.name} </td> 
-        <td><a href="#" class="btn btn-danger" onclick="delData()">Delete </td> 
-
-        </tr>`;
-
+const insert=()=>{
+    let cdata=JSON.parse(localStorage.getItem("catdata"));
+    let cname=document.catfrm.catname.value;
+    let cid=document.catfrm.catid.value;
+    let obj ={};
+    if(cid!=''){
+        //update    
+        cdata.map((item)=>{
+            if(item.id == cid)
+            item.name=cname;
         })
-        document.getElementById("allCatData").innerHTML = tr;
+        localStorage.setItem('catdata', JSON.stringify(cdata));
+    }else{
+        if(cdata!=null){
+            obj={
+                id:cdata.length+1,
+                name:cname
+            }
+            arr = cdata
+        }
+        else{
+            //new array push
+            obj = {
+                id:1,
+                name: cname
+            }
+        }
+        arr.push(obj)
+        localStorage.setItem("catdata", JSON.stringify(arr))
+        
     }
+    document.catfrm.catname.value ='';
+    document.catfrm.catid.value='';
+    display();
 }
-dispData()
 
+const display = () => {
+    let cData = JSON.parse(localStorage.getItem("catdata"));
+    let cluster = ''
 
-//delete
-const delData = (id) => {
-    let allData = JSON.parse(localStorage.getItem("CatInfo"));
-    allData.splice(id-1, 1);
-
-    newId = 1 ;
-    allData.map((i) => {
-        i.id = newId++;
+    cData.map((item) => {
+        cluster += `  <tr>
+                    <td>${item.id}</td>
+                    <td>${item.name}</td>
+                    <td><button class="btn btn-primary" onclick="edit(${item.id})">UPDATE</buton></td>
+                    <td><button class="btn btn-danger"onclick="remove(${item.id})"> DELETE</buton></td>
+                    </tr>`
     })
-    localStorage.setItem("CatInfo", JSON.stringify(allData))
-    dispData();
+    document.getElementById('allCatData').innerHTML = cluster
 }
-dispData()
+
+const remove = (id) => {
+    let catData = JSON.parse(localStorage.getItem("catdata"));
+    catData.splice(id - 1, 1);
+    let newid = 1;
+    catData.map((item) => {
+        item.id = newid++
+    })
+    localStorage.setItem("catdata", JSON.stringify(catData))
+    display();
+}
+
+
+const edit = (id) => {
+    let catData = JSON.parse(localStorage.getItem("catdata"));
+    let data = catData.filter((item) => {
+        return item.id == id
+    })
+    console.log(catData);
+
+    document.catfrm.catname.value = data[0].name
+    document.catfrm.catid.value = data[0].id
+    id = catfrm.catid.value
+}
+
+
+display();
+
+
+
+
