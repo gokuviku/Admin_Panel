@@ -9,21 +9,21 @@ let arr2 = [];
 
 const addProd = () => {
     let proData = JSON.parse(localStorage.getItem("products"));
-    let name = document.prfrm.pname.value;
-    let price = document.prfrm.pprice.value;
-    let des = document.prfrm.pdes.value;
-    let pid = document.prfrm.pid.value;
-    let catid = document.prfrm.cid.value;
+    let name = document.frm.pname.value;
+    let price = document.frm.price.value;
+    let des = document.frm.des.value;
+    let pid = document.frm.pid.value;
+    let Cid = document.frm.cid.value;
+    let obj = "";
 
     if (pid != '') {
         //update
         proData.map((item) => {
-            if (item.id == pid) {
+            if (item.pid == pid) {
                 item.name = name;
                 item.price = price;
                 item.des = des;
-                item.catid = catid;
-
+                item.Cid = Cid;
             }
         })
         localStorage.setItem('products', JSON.stringify(proData));
@@ -33,31 +33,37 @@ const addProd = () => {
             //insert
             obj = {
                 pid: proData.length + 1,
-                catid: catid,
+                Cid: Cid,
                 name: name,
                 price: price,
                 des: des,
             };
-            proData.push(obj);
-            // arr2 = proData
-            localStorage.setItem('products', JSON.stringify(proData));
+            // proData.push(obj);
+            arr2 = proData
+            // localStorage.setItem('products', JSON.stringify(proData));
         } else {
             //new array push
             obj = {
                 pid: 1,
-                catid: catid,
+                Cid: Cid,
                 name: name,
                 price: price,
                 des: des,
             };
         }
-            arr2.push(obj);
-            localStorage.setItem('products', JSON.stringify(arr2));
+        arr2.push(obj);
+        localStorage.setItem('products', JSON.stringify(arr2));
     }
-    document.prfrm.reset();
-    dispProd();
+    document.frm.pid.value = "";
+    document.frm.pname.value = "";
+    document.frm.price.value = "";
+    document.frm.des.value = "";
+    document.frm.cid.value = "";
+
+    // document.frm.reset();
+    display();
 };
-const dispProd = () => {
+const display = () => {
     let tr = '';
     let proData = JSON.parse(localStorage.getItem("products"));
     let cdata = JSON.parse(localStorage.getItem("catdata"));
@@ -65,12 +71,13 @@ const dispProd = () => {
 
     proData.map((i) => {
         cdata.filter((j) => {
-            if (i.catid ==j.id) {
-                return i.name = j.name;
+            if (j.id == i.Cid) {
+                return i.cname = j.name;
             }
         })
         tr += `<tr> 
         <td>${i.pid}</td>
+        <td>${i.cname}</td> 
         <td>${i.name}</td> 
         <td>${i.price}</td> 
         <td>${i.des}</td> 
@@ -80,30 +87,35 @@ const dispProd = () => {
     });
     document.getElementById("allProdData").innerHTML = tr;
 };
-
-const editProduct = (id) => {
-    let proData = JSON.parse(localStorage.getItem("products"));
-    proData.filter((i) => {
-        if (i.pid == id)
-        //get value in input field
-            document.prfrm.pid.value = i.pid;
-            document.prfrm.pname.value = i.name;
-            document.prfrm.pprice.value = i.price;
-            document.prfrm.pdes.value = i.des;
-            document.prfrm.cid.value = i.catid;
-    })
-}
-
 const delProduct = (id) => {
     let proData = JSON.parse(localStorage.getItem("products"));
-    newid = 1;
+    nid = 1;
     proData.splice(id - 1, 1)
     proData.map((i) => {
-        i.pid = newid++;
+        i.pid = nid++;
     })
     localStorage.setItem("products", JSON.stringify(proData))
-    dispProd();
+    display();
 
 }
-dispProd();
-addProd();
+const editProduct = (id) => {
+    let proData = JSON.parse(localStorage.getItem("products"));
+    let cat = proData.filter((i) => {
+        return i.pid == id
+    })
+    console.log(cat);
+
+    document.frm.pid.value = cat[0].pid;
+    document.frm.cid.value = cat[0].Cid;
+    document.frm.pname.value = cat[0].name;
+    document.frm.price.value = cat[0].price;
+    document.frm.des.value = cat[0].des;
+
+
+    // document.getElementById("price").value = cat[0].price;
+    // document.getElementById("des").value = cat[0].des;
+    // document.getElementById("cid").value = cat[0].cid;
+}
+
+
+display();

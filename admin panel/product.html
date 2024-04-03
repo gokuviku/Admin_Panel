@@ -278,9 +278,9 @@
 
 
           <!-- form start -->
-          <form name="prfrm" method="post" action="#">
+          <form name="frm" method="post" action="#">
             <div class="card-body">
-              <input type="hidden" name="pid">
+              <input type="text" name="pid" id="pid"/>
 
               <div class="form-group">
                 <label for="exampleInputEmail1">Category:</label>
@@ -289,19 +289,19 @@
 
               <div class="form-group">
                 <label for="exampleInputEmail1">ProductName:</label>
-                <input type="text" name="pname" class="form-control" id="exampleInputEmail1"
+                <input type="text" name="pname" class="form-control" id="pname"
                   placeholder="Enter ProductName">
               </div>
 
               <div class="form-group">
                 <label for="exampleInputEmail1">price:</label>
-                <input type="text" name="pprice" class="form-control" id="exampleInputEmail1"
+                <input type="text" name="price" class="form-control" id="price"
                   placeholder="Enter price">
               </div>
 
               <div class="form-group">
                 <label for="exampleInputEmail1">description:</label>
-                <textarea name="pdes" id="pdes" class="form-control" placeholder="enter description"></textarea>
+                <textarea name="des" id="des" class="form-control" placeholder="enter description"></textarea>
               </div>
             </div>
             <!-- /.card-body -->
@@ -335,7 +335,7 @@
                     <th>Category</th>
                     <th>Name</th>
                     <th>Price</th>
-                    <th>Desc</th>
+                    <th>Description</th>
                     <th>Action</th>
 
                   </tr>
