@@ -1,4 +1,4 @@
-let catList = JSON.parse(localStorage.getItem("catdata"));
+let catList = JSON.parse(localStorage.getItem("catData"));
 let cluster = `<option>--select category--</option>`;
 catList.map((item) => {
     cluster += `<option value=${item.id}>${item.name}</option>`;
@@ -14,6 +14,7 @@ const addProd = () => {
     let des = document.frm.des.value;
     let pid = document.frm.pid.value;
     let Cid = document.frm.cid.value;
+    let prImg=JSON.parse(localStorage.getItem("prImg"));
     let obj = "";
 
     if (pid != '') {
@@ -24,6 +25,7 @@ const addProd = () => {
                 item.price = price;
                 item.des = des;
                 item.Cid = Cid;
+                item.prImg =prImg;
             }
         })
         localStorage.setItem('products', JSON.stringify(proData));
@@ -37,10 +39,9 @@ const addProd = () => {
                 name: name,
                 price: price,
                 des: des,
+                prImg:prImg
             };
-            // proData.push(obj);
             arr2 = proData
-            // localStorage.setItem('products', JSON.stringify(proData));
         } else {
             //new array push
             obj = {
@@ -49,6 +50,7 @@ const addProd = () => {
                 name: name,
                 price: price,
                 des: des,
+                prImg:prImg
             };
         }
         arr2.push(obj);
@@ -59,16 +61,13 @@ const addProd = () => {
     document.frm.price.value = "";
     document.frm.des.value = "";
     document.frm.cid.value = "";
-
-    // document.frm.reset();
+    document.frm.frmImg.value = "";
     display();
 };
 const display = () => {
     let tr = '';
     let proData = JSON.parse(localStorage.getItem("products"));
-    let cdata = JSON.parse(localStorage.getItem("catdata"));
-
-
+    let cdata = JSON.parse(localStorage.getItem("catData"));
     proData.map((i) => {
         cdata.filter((j) => {
             if (j.id == i.Cid) {
@@ -81,6 +80,7 @@ const display = () => {
         <td>${i.name}</td> 
         <td>${i.price}</td> 
         <td>${i.des}</td> 
+        <td><img src="${i.prImg}" width="100px" height="100px"/></td> 
         <td><button class="btn btn-danger" onclick="delProduct(${i.pid})">Delete</button></td>
         <td><button class="btn btn-primary" onclick="editProduct(${i.pid})">Edit</button></td>
         </tr>`;
@@ -103,19 +103,26 @@ const editProduct = (id) => {
     let cat = proData.filter((i) => {
         return i.pid == id
     })
-    console.log(cat);
-
+    // console.log(cat);
     document.frm.pid.value = cat[0].pid;
     document.frm.cid.value = cat[0].Cid;
     document.frm.pname.value = cat[0].name;
     document.frm.price.value = cat[0].price;
     document.frm.des.value = cat[0].des;
+    document.frm.frmImg.value = cat[0].prImg;
 
-
-    // document.getElementById("price").value = cat[0].price;
-    // document.getElementById("des").value = cat[0].des;
-    // document.getElementById("cid").value = cat[0].cid;
 }
 
-
+const previewImage = (e) => {
+    var input = e.target;
+    var image = document.getElementById('preview');
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            image.src = e.target.result;
+            localStorage.setItem("prImg", JSON.stringify(e.target.result));
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+}
 display();

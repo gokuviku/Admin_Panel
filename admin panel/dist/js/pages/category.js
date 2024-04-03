@@ -1,7 +1,7 @@
 let arr = [];
 
 const insert=()=>{
-    let cdata=JSON.parse(localStorage.getItem("catdata"));
+    let cdata=JSON.parse(localStorage.getItem("catData"));
     let cname=document.catfrm.catname.value;
     let cid=document.catfrm.catid.value;
     let obj ={};
@@ -11,7 +11,7 @@ const insert=()=>{
             if(item.id == cid)
             item.name=cname;
         })
-        localStorage.setItem('catdata', JSON.stringify(cdata));
+        localStorage.setItem('catData', JSON.stringify(cdata));
     }else{
         //insert
         if(cdata!=null){
@@ -29,7 +29,7 @@ const insert=()=>{
             }
         }
         arr.push(obj)
-        localStorage.setItem("catdata", JSON.stringify(arr))
+        localStorage.setItem("catData", JSON.stringify(arr))
         
     }
     document.catfrm.catname.value ='';
@@ -38,7 +38,7 @@ const insert=()=>{
 }
 
 const display = () => {
-    let cData = JSON.parse(localStorage.getItem("catdata"));
+    let cData = JSON.parse(localStorage.getItem("catData"));
     let cluster = ''
 
     cData.map((item) => {
@@ -53,19 +53,19 @@ const display = () => {
 }
 
 const remove = (id) => {
-    let catData = JSON.parse(localStorage.getItem("catdata"));
+    let catData = JSON.parse(localStorage.getItem("catData"));
     catData.splice(id - 1, 1);
     let newid = 1;
     catData.map((item) => {
         item.id = newid++
     })
-    localStorage.setItem("catdata", JSON.stringify(catData))
+    localStorage.setItem("catData", JSON.stringify(catData))
     display();
 }
 
 
 const edit = (id) => {
-    let catData = JSON.parse(localStorage.getItem("catdata"));
+    let catData = JSON.parse(localStorage.getItem("catData"));
     let data = catData.filter((item) => {
         return item.id == id
     })
