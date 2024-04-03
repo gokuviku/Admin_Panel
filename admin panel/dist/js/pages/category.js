@@ -13,6 +13,7 @@ const insert=()=>{
         })
         localStorage.setItem('catdata', JSON.stringify(cdata));
     }else{
+        //insert
         if(cdata!=null){
             obj={
                 id:cdata.length+1,
