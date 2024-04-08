@@ -1,3 +1,6 @@
+
+
+
 let catList = JSON.parse(localStorage.getItem("catData"));
 let cluster = `<option>--select category--</option>`;
 catList.map((item) => {
@@ -14,7 +17,7 @@ const addProd = () => {
     let des = document.frm.des.value;
     let pid = document.frm.pid.value;
     let Cid = document.frm.cid.value;
-    let prImg=JSON.parse(localStorage.getItem("prImg"));
+    let prImg = JSON.parse(localStorage.getItem("prImg"));
     let obj = "";
 
     if (pid != '') {
@@ -25,7 +28,7 @@ const addProd = () => {
                 item.price = price;
                 item.des = des;
                 item.Cid = Cid;
-                item.prImg =prImg;
+                item.prImg = (prImg != null)?prImg:item.prImage;
             }
         })
         localStorage.setItem('products', JSON.stringify(proData));
@@ -39,7 +42,7 @@ const addProd = () => {
                 name: name,
                 price: price,
                 des: des,
-                prImg:prImg
+                prImg: prImg
             };
             arr2 = proData
         } else {
@@ -50,7 +53,7 @@ const addProd = () => {
                 name: name,
                 price: price,
                 des: des,
-                prImg:prImg
+                prImg: prImg
             };
         }
         arr2.push(obj);
@@ -62,6 +65,8 @@ const addProd = () => {
     document.frm.des.value = "";
     document.frm.cid.value = "";
     document.frm.frmImg.value = "";
+    document.getElementById('preview').src="";
+    localStorage.removeItem("prImg");
     display();
 };
 const display = () => {
@@ -79,7 +84,6 @@ const display = () => {
         <td>${i.cname}</td> 
         <td>${i.name}</td> 
         <td>${i.price}</td> 
-        <td>${i.des}</td> 
         <td><img src="${i.prImg}" width="100px" height="100px"/></td> 
         <td><button class="btn btn-danger" onclick="delProduct(${i.pid})">Delete</button></td>
         <td><button class="btn btn-primary" onclick="editProduct(${i.pid})">Edit</button></td>
@@ -109,7 +113,7 @@ const editProduct = (id) => {
     document.frm.pname.value = cat[0].name;
     document.frm.price.value = cat[0].price;
     document.frm.des.value = cat[0].des;
-    document.frm.frmImg.value = cat[0].prImg;
+    document.getElementById('preview').src = cat[0].prImg;
 
 }
 
