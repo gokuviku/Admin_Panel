@@ -64,13 +64,12 @@ document.getElementById('prInfo').innerHTML = cluster;
 let cartData = []
 const addCart = (id) => {
     let cData = JSON.parse(localStorage.getItem("cartData"));
-    let product = JSON.parse(localStorage.getItem('products'));
     let pname = ""
     let price = ""
     let img = ""
     let obj = {}
 
-    product.map((i) => {
+    product.filter((i) => {
         if (i.pid == id) {
             pname = i.name;
             price = i.price;
@@ -81,12 +80,12 @@ const addCart = (id) => {
         //pid exist or not
         //if exist then qty +=1
         //else push record
-        let ans = product.filter((i) => {
+        let ans = cData.filter((i) => {
             return i.pid == id
         })
         if (ans.length > 0) {
             //increment  quantity of the item in the cart
-            cartData.map((i) => {
+            cData.map((i) => {
                 if (i.pid == id) {
                     i.qty += 1;
                 }
@@ -103,7 +102,7 @@ const addCart = (id) => {
                 price: price,
                 qty: 1
             }
-            cData.push(obj);
+            cData.push(obj); //it is pushing in object
         }
         localStorage.setItem("cartData", JSON.stringify(cData))
     } else {
@@ -115,7 +114,7 @@ const addCart = (id) => {
             price: price,
             qty: 1
         }
-        cartData.push(obj);
+        cartData.push(obj); //it is pushing in array
         localStorage.setItem("cartData", JSON.stringify(cartData))
     }
 }
