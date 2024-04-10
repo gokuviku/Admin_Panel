@@ -1,10 +1,11 @@
+//display categories
 
 let catInf = JSON.parse(localStorage.getItem('catData'));
 let product = JSON.parse(localStorage.getItem('products'));
 
 let tr = `<button class="stext-106 cl6 hov1 bor3 trans-04  m-r-32 m-tb-5" data-filter="*">
-All product
-</button>`
+            All product
+          </button>`
 
 catInf.map((i) => {
     tr += `<button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" how-active1 data-filter=".${i.name}">
@@ -13,6 +14,7 @@ catInf.map((i) => {
 })
 document.getElementById("CaName").innerHTML = tr
 
+//display products by category
 let cluster = ''
 catInf.map((i) => {
     product.filter((j) => {
@@ -25,7 +27,7 @@ catInf.map((i) => {
     
                 <a href="#"
                     class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1" 
-                    onclick="addCart(${j.Cid})">
+                    onclick="addCart(${j.pid})">
                     Add to cart
                 </a>
             </div>
@@ -56,13 +58,11 @@ catInf.map((i) => {
     })
 
 })
-
-
 document.getElementById('prInfo').innerHTML = cluster;
 
-
+// add to cart
 let cartData = []
-const addCart = (id) => {
+let addCart = (id) => {
     let cData = JSON.parse(localStorage.getItem("cartData"));
     let pname = ""
     let price = ""
@@ -96,11 +96,11 @@ const addCart = (id) => {
 
             obj = {
                 cartId: cartData.length + 1,
+                qty: 1,
                 pid: id,
                 img: img,
                 pname: pname,
-                price: price,
-                qty: 1
+                price: price
             }
             cData.push(obj); //it is pushing in object
         }
@@ -116,5 +116,8 @@ const addCart = (id) => {
         }
         cartData.push(obj); //it is pushing in array
         localStorage.setItem("cartData", JSON.stringify(cartData))
+        displayCart();
     }
 }
+
+
